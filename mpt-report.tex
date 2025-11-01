@@ -1,0 +1,424 @@
+%----------------------------------------------------------------------------------------
+%	FONTS
+%----------------------------------------------------------------------------------------
+
+% Font size: 11pt
+% Paragraph spacing: half
+\documentclass[11pt, parskip=half]{scrartcl}
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\usepackage{amsmath, amsfonts, amsthm} % Math packages
+\usepackage{listings} % Code listings, with syntax highlighting
+\usepackage{xcolor} % Color support for \textcolor
+\usepackage[english]{babel} % English language hyphenation
+\usepackage{graphicx} % Required for inserting images
+\usepackage{booktabs} % Required for better horizontal rules in tables
+
+\usepackage{float}   % for [H]
+\usepackage{needspace} % to ensure enough room for heading+figure
+
+\numberwithin{equation}{section} % Number equations within sections
+\numberwithin{figure}{section}   % Number figures within sections
+\numberwithin{table}{section}    % Number tables within sections
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+\usepackage{enumitem} % Required for list customisation
+\setlist{noitemsep} % No spacing between list items
+
+\usepackage{hyperref} % For hyperlinks in the PDF
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT MARGINS
+%----------------------------------------------------------------------------------------
+
+\usepackage{geometry} % Required for adjusting page dimensions and margins
+
+\geometry{
+	paper=a4paper,
+	top=1.5cm,
+	bottom=2cm,
+	left=2cm,
+	right=2cm,
+	headheight=0.75cm,
+	footskip=1.5cm,
+	headsep=0.75cm,
+	%showframe,
+}
+
+%----------------------------------------------------------------------------------------
+%	SECTION TITLES
+%----------------------------------------------------------------------------------------
+
+% --- SECTION ---
+% set I, II, III font styles
+
+\setkomafont{section}{\normalfont\Large\bfseries}
+%\setcounter{secnumdepth}{0}
+\renewcommand\thesection{\Roman{section}} % Roman numerals for sections
+%\renewcommand*\sectionformat{} % hide number only in the section heading
+% --- SUBSECTION ---
+\setkomafont{subsection}{\normalfont\bfseries}
+% --- SUBSUBSECTION ---
+\setkomafont{subsubsection}{\normalfont\itshape}
+% --- PARAGRAPH ---
+\setkomafont{paragraph}{\normalfont\scshape}
+
+%----------------------------------------------------------------------------------------
+%	HEADERS AND FOOTERS
+%----------------------------------------------------------------------------------------
+
+\usepackage{scrlayer-scrpage} % Required for customising headers and footers
+
+\ohead*{} % Right header
+\ihead*{} % Left header
+\chead*{} % Centre header
+
+\ofoot*{} % Right footer
+\ifoot*{} % Left footer
+\cfoot*{\pagemark} % Centre footer
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\title{	
+	\normalfont\normalsize
+	\vspace{-40pt}
+
+	\rule{\linewidth}{0.5pt}\\ % Thin top horizontal rule
+	\vspace{20pt}
+
+	{\huge \textbf{Modern Portfolio Theory}}\\
+	\vspace{10pt}
+	{\LARGE \textit{A Theoretical Framework for Portfolio Optimization \\ and Risk Management}}\\
+
+	\vspace{10pt}
+	\rule{\linewidth}{1pt}\\ % Thick middle horizontal rule
+	\vspace{0pt}
+
+}
+
+\author{
+    \LARGE \textbf{Milan Peter} \\
+    \large November 2025 \\
+}
+
+\date{}
+
+\begin{document}
+
+\maketitle % Print the title
+
+\vspace{-3.5em}  % reduce vertical space between title and text
+
+%----------------------------------------------------------------------------------------
+%	INTRO
+%----------------------------------------------------------------------------------------
+
+\begin{quote}
+
+Modern Portfolio Theory, born from Harry Markowitz's 1952 paper "Portfolio Selection", brought the scientific method into investing.
+Its core message: is that risk and return must be analyzed together, not in isolation.
+An investor should not simply choose assets with the highest expected returns, but rather combine assets so that their risks offset each other.
+This is diversification: the only \textit{free lunch} in finance.
+The theory constructs a quantitative relationship between expected return (reward), volatility (risk), and correlation (how assets move together).
+The result is the efficient frontier, a mathematical boundary that separates rational portfolios (efficient) from inefficient ones.
+
+\end{quote}
+
+%----------------------------------------------------------------------------------------
+%	SECTIONS
+%----------------------------------------------------------------------------------------
+
+\section{Basic Concepts}
+\vspace{-1em}
+
+%-------------------------------------------
+
+\subsection{Expected Portfolio Return}
+\vspace{-1em}
+
+The starting point is expectation – what we think the portfolio will earn on average.
+\[
+E[R_p] = \mathbf{w}' \boldsymbol{\mu} = \sum_{i=1}^{N} w_i E[R_i]
+\]
+where
+\begin{itemize}
+	\item $E[R_p]$: expected portfolio return
+	\item $E[R_i]$: expected return of asset $i$
+	\item $\mathbf{w}'$: transpose of the weight vector
+	\item $\boldsymbol{\mu}$: vector of expected asset returns
+	\item $N$: number of assets in the portfolio
+	\item $w_i$: portfolio weight of asset $i$, with $\sum_i w_i = 1$
+\end{itemize}
+
+The portfolio's expected return is the weighted average of the assets' expected returns. It grows linearly with the weights.
+
+%-------------------------------------------
+
+\subsection{Portfolio Volatility}
+\vspace{-1em}
+
+Risk is not additive. Two risky assets can make a safer portfolio if they move in opposite directions.
+\[
+\sigma_p = \sqrt{ \mathbf{w}' \boldsymbol{\Sigma} \mathbf{w} }
+\]
+where
+\begin{itemize}
+	\item $\sigma_p$: portfolio standard deviation (total risk)
+	\item $\boldsymbol{\Sigma}$: covariance matrix, with elements $\sigma_{ij} = \text{Cov}(R_i, R_j)$
+	\item $\mathbf{w}$: vector of portfolio weights
+\end{itemize}
+
+Portfolio risk depends on both individual asset volatilities and their correlations.
+Even if every asset is volatile, their combined portfolio can be less volatile if they're not perfectly correlated.
+Diversification works because the off-diagonal covariances can offset some of the total risk.
+This is the mathematical essence of diversification.
+
+%-------------------------------------------
+
+\subsection{Sharpe Ratio}
+\vspace{-1em}
+Invented by William Sharpe (1966), this metric summarizes risk-adjusted performance:
+\[
+S = \frac{E[R_p] - R_f}{\sigma_p}
+\]
+where
+\begin{itemize}
+	\item $S$: Sharpe Ratio
+	\item $E[R_p]$: expected portfolio return
+	\item $R_f$: risk-free rate
+	\item $\sigma_p$: portfolio volatility
+\end{itemize}
+
+Measures how much excess return per unit of risk the portfolio delivers.
+It's the slope of the Capital Market Line (CML) – higher Sharpe means more efficient portfolios.
+
+%-------------------------------------------
+
+\section{Portfolio Optimization}
+\vspace{-1em}
+
+\subsection{Efficient Frontier}
+\vspace{-1em}
+
+Among all possible weight combinations, some portfolios are optimal: no other portfolio gives more expected return for the same volatility.
+Formally:
+\[
+\min_{\mathbf{w}} \ \mathbf{w}'\boldsymbol{\Sigma}\mathbf{w}
+\quad \text{s.t.} \quad
+\mathbf{w}'\boldsymbol{\mu} = \mu_p,; \mathbf{w}'\mathbf{1}=1
+\]
+with
+\begin{itemize}
+	\item \textbf{objective}: minimize portfolio variance $\mathbf{w}'\boldsymbol{\Sigma}\mathbf{w}$
+	\item \textbf{constraints}: achieve a target expected return $\mu_p$ and fully invest all wealth
+\end{itemize}
+
+Solving this optimization traces out the efficient frontier – the boundary of optimal portfolios offering the best return for each level of risk.
+Portfolios below the curve are inefficient; those on the curve are the best possible trade-offs.
+
+%-------------------------------------------
+
+\subsection{Tangency Portfolio}
+\vspace{-1em}
+
+When a risk-free asset exists, we can draw a Capital Market Line (CML) from $R_f$ tangent to the frontier.
+The tangency point defines the optimal risky portfolio:
+\[
+\mathbf{w}^* =
+\frac{ \boldsymbol{\Sigma}^{-1}(\boldsymbol{\mu} - R_f \mathbf{1}) }
+{ \mathbf{1}' \boldsymbol{\Sigma}^{-1}(\boldsymbol{\mu} - R_f \mathbf{1}) }
+\]
+where
+\begin{itemize}
+	\item $\mathbf{w}^*$: optimal weight vector of the tangency portfolio
+	\item $R_f$: risk-free rate
+	\item $\boldsymbol{\Sigma}^{-1}$: inverse covariance matrix
+	\item $\boldsymbol{\mu}$: vector of expected returns
+	\item $\mathbf{1}$: vector of ones
+\end{itemize}
+
+This portfolio lies at the tangency point between the risk-free line and the efficient frontier.
+All rational investors hold this same risky portfolio but adjust their exposure to it by mixing in different amounts of the risk-free asset.
+
+% -------------------
+\subsection{Minimum Volatility Portfolio}
+\vspace{-1em}
+
+If we care only about minimizing risk (ignoring return expectations), we get:
+\[
+\mathbf{w}_{\min} =
+\frac{ \boldsymbol{\Sigma}^{-1}\mathbf{1} }
+{ \mathbf{1}' \boldsymbol{\Sigma}^{-1}\mathbf{1} }
+\]
+where
+\begin{itemize}
+	\item $\mathbf{w}_{\min}$: weight vector of the portfolio with the smallest variance
+\end{itemize}
+
+This is the global minimum variance portfolio – the most stable combination of assets.
+
+%-------------------------------------------
+
+\subsection{Daily and Annualized Return \& Volatility}
+\vspace{-1em}
+
+To compare returns and risk across time scales, we annualize:
+\[
+\mu_{\text{annual}} = \mu_{\text{daily}} \times 252,\quad
+\sigma_{\text{annual}} = \sigma_{\text{daily}} \times \sqrt{252}
+\]
+where
+\begin{itemize}
+	\item $\mu_{\text{annual}}$: annualized mean return
+	\item $\sigma_{\text{annual}}$: annualized standard deviation of returns
+	\item 252: approximate number of trading days per year
+\end{itemize}
+
+It's essential when working with data of different frequencies.
+
+% -------------------
+
+\subsection{Visualizing Portfolio Optimization Concepts}
+\vspace{-1em}
+
+\begin{figure}[H]
+	\centering
+	\caption{Modern Portfolio Theory: Efficient Frontier and Capital Market Line}
+	\includegraphics[width=\textwidth]{figures/efficient_frontier_cml.png}
+	\label{fig:efficient-frontier-cml}
+\end{figure}
+\vspace{-1em}
+
+This figure is a visual summary of Modern Portfolio Theory in action.
+It translates the mathematics of portfolio optimization into a clear geometric picture.
+
+On the horizontal axis is risk (annualized volatility, $\sigma_p$), and on the vertical axis expected return ($\mu_p$).
+Each blue dot represents a single-asset portfolio – holding only one stock.
+It can be seen that some assets, like TSLA, offer high potential return but also high volatility, while others, like MSFT or DIS, are steadier but yield less.
+
+The blue curve is the efficient frontier.
+It shows the best possible trade-off between risk and return achievable by combining these assets.
+Any point below it is inefficient – you could earn more return for the same risk by moving up to the frontier.
+
+The orange diamond marks the global minimum-variance portfolio – the least risky combination of assets.
+The green star is the tangency portfolio: the point on the frontier that, when connected to the risk-free rate (here 2\%), gives the Capital Market Line (CML) shown in green.
+The slope of that line is the Sharpe ratio, a measure of risk-adjusted performance.
+Portfolios on this line combine the risk-free asset and the tangency portfolio in different proportions: investors with lower risk tolerance hold more of the risk-free asset; aggressive investors leverage beyond the star along the same line.
+
+Together, this diagram illustrates how diversification allows investors to move from isolated risky points (individual stocks) to an efficient, optimized mix that maximizes expected return for any desired level of risk.
+
+%-------------------------------------------
+
+\section{Risk Measures}
+\vspace{-1em}
+
+%-------------------------------------------
+\subsection{Value at Risk (VaR)}
+\vspace{-1em}
+
+Value at Risk is a statistical measure used to assess the risk of loss on an investment.
+It estimates the maximum potential loss over a specified time period for a given confidence interval.
+The formula for VaR is:
+\[
+\text{VaR}_{\alpha} = -(\mu_p + z_{\alpha}\sigma_p)
+\]
+where
+\begin{itemize}
+	\item $\alpha$: confidence level (usually 95\% or 99\%)
+	\item $z_{\alpha}$: quantile of the standard normal distribution
+	\item $\mu_p, \sigma_p$: portfolio mean and standard deviation
+\end{itemize}
+
+VaR can be calculated using historical simulation, variance-covariance, or Monte Carlo methods.
+
+
+%-------------------------------------------
+
+\subsection{Expected Shortfall (ES) / Conditional VaR}
+\vspace{-1em}
+
+VaR gives a threshold, while ES shows how bad the losses are beyond it:
+\[
+\text{ES}_{\alpha} = -\mu_p + \frac{\sigma_p \phi(z_{\alpha})}{1 - \alpha}
+\]
+where
+\begin{itemize}
+	\item $\phi(z_{\alpha})$: standard normal probability density at $z_{\alpha}$
+\end{itemize}
+
+Expected Shortfall averages the losses beyond the VaR threshold – a fuller measure of tail risk and downside vulnerability.
+
+% -------------------
+\subsection{Maximum Drawdown}
+\vspace{-1em}
+
+Measures the deepest decline from peak to trough:
+\[
+\text{MDD} =
+\max_t \left( \frac{ \max_{s \le t} V_s - V_t }{ \max_{s \le t} V_s } \right)
+\]
+where
+\begin{itemize}
+	\item $\text{MDD}$: maximum drawdown
+	\item $V_s$: portfolio value at time (s)
+	\item $V_t$: portfolio value at time (t)
+	\item $\max_{s \le t} V_s$: previous peak value up to time (t)
+\end{itemize}
+
+Captures the deepest cumulative loss.
+Unlike volatility, it reflects path dependency – how losses unfold over time.
+
+% -------------------
+\subsection{Visualizing Risk Measures}
+\vspace{-1em}
+
+\begin{figure}[H]
+	\centering
+	\caption{Portfolio Daily VaR and Expected Shortfall (95\%)}
+	\includegraphics[width=\textwidth]{figures/portfolio_var_es.png}
+	\label{fig:portfolio-var-es}
+\end{figure}
+\vspace{-1em}
+
+This figure visualizes Value at Risk (VaR) and Expected Shortfall (ES) – two central tools in financial risk management – applied to your daily portfolio returns.
+
+The blue histogram shows the empirical distribution of daily returns, while the orange curve overlays a fitted normal distribution.
+The shaded red area marks the left tail of losses beyond the 95\% confidence cutoff – the region where bad days live.
+
+The solid red line is the historical $\text{VaR}_{\text{hist}}$, meaning that on 5\% of days, losses exceeded roughly 3.4\%.
+The dashed orange line is the parametric $\text{VaR}_{\text{par}}$, estimated assuming returns are perfectly normal; it's slightly smaller because normal models understate extreme events.
+
+The dotted red line and dash-dot orange line mark the corresponding Expected Shortfalls (ES) – the average losses beyond the VaR threshold.
+ES captures tail severity, answering: "When things go wrong, how bad are they on average?"
+
+Together, this plot contrasts the empirical vs. theoretical view of downside risk.
+The left tail's heavier shape in the histogram relative to the normal curve reminds us that real-world returns are often not perfectly Gaussian – and that risk models relying solely on normal assumptions may underestimate the probability of extreme losses.
+
+%----------------------------------------------------------------------------------------
+%	REFERENCES
+%----------------------------------------------------------------------------------------
+
+\begin{thebibliography}{9}
+
+\bibitem{jorion2007}
+Jorion, P. (2007). \textit{Value at Risk: The New Benchmark for Managing Financial Risk}. 3rd edition. McGraw-Hill.
+
+\bibitem{markowitz1952}
+Markowitz, H. (1952). Portfolio Selection. \textit{The Journal of Finance} 7.1, pp. 77–91.
+
+\bibitem{sharpe1966}
+Sharpe, W. F. (1966). Mutual Fund Performance. \textit{The Journal of Business} 39.1, pp. 119–138.
+
+\end{thebibliography}
+
+%----------------------------------------------------------------------------------------
+%	END OF DOCUMENT
+%----------------------------------------------------------------------------------------
+
+\end{document}
